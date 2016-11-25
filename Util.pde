@@ -1,46 +1,20 @@
 
-
-public float[] map(float[] vals, float minV, float maxV, float minF, float maxF)
+public void askForFile()
 {
-    float[] result = new float[vals.length];
-    float slope = (maxF - minF) / (maxV - minV);
-    for (int i=0 ; i<vals.length ; i++)
-    {
-        result[i] = (vals[i] - minV) * slope + minF;
+    selectInput("Select a Simulation (.xvg) to process:", "fileSelected");
+}
+
+void fileSelected(File selection) {
+    if (selection == null) {
+        //println("Window was closed or the user hit cancel.");
+        return;
     }
-    return result;
+    String filepath = selection.getAbsolutePath();
+    println("Input File = " + selection.getAbsolutePath());
+    SimReader sm = new SimReader(filepath);
+    sm.readFile();
 }
 
-public float[] mapAuto(float[] vals, float minF, float maxF)
-{
-    float minV = min(vals);
-    float maxV = max(vals);
-    return map(vals, minV, maxV, minF, maxF);
-}
-
-public class Box
-{
-    float x, y, w, h;
-    public Box(float xx, float yy, float ww, float hh)
-    {
-        x = xx;
-        y = yy;
-        w = ww;
-        h = hh;
-    }
-}
-
-
-public float[] iter(float[] vals, int start, int end, int pace)
-{
-    int resultLen = (end - start) / pace;
-    float[] result = new float[resultLen];
-    for (int i=0; i<resultLen ; i++)
-    {
-        result[i] = vals[start + i * pace]; 
-    }
-    return result;
-}
 
 
 // draws the title at the top of the visualization
@@ -71,4 +45,34 @@ public void drawFooter() {
     textSize(textSize);
     textAlign(RIGHT, BOTTOM);
     text(join(footer, "  "), width, height);
+}
+
+
+public float[] iter(float[] vals, int start, int end, int pace)
+{
+    int resultLen = (end - start) / pace;
+    float[] result = new float[resultLen];
+    for (int i=0; i<resultLen; i++)
+    {
+        result[i] = vals[start + i * pace];
+    }
+    return result;
+}
+
+public float[] map(float[] vals, float minV, float maxV, float minF, float maxF)
+{
+    float[] result = new float[vals.length];
+    float slope = (maxF - minF) / (maxV - minV);
+    for (int i=0; i<vals.length; i++)
+    {
+        result[i] = (vals[i] - minV) * slope + minF;
+    }
+    return result;
+}
+
+public float[] mapAuto(float[] vals, float minF, float maxF)
+{
+    float minV = min(vals);
+    float maxV = max(vals);
+    return map(vals, minV, maxV, minF, maxF);
 }
