@@ -6,7 +6,7 @@
 
 ** TODO: Link to processing homepage / download **
 
-** TODO: Link to final paper (overleaf) **
+** TODO: Link to final paper (overleaf read-only copy) **
 
 ** TODO: tutorial and features of VisSIMP **
 
