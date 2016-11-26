@@ -76,3 +76,16 @@ public float[] mapAuto(float[] vals, float minF, float maxF)
     float maxV = max(vals);
     return map(vals, minV, maxV, minF, maxF);
 }
+
+public float calculateSum(float[] vals)
+{
+  float sum = 0.0;
+  for(float value: vals)
+    sum+=value;
+  return sum;
+}
+
+public float calculateAverage(float[] vals)
+{
+  return calculateSum(vals)/vals.length;
+}
