@@ -1,11 +1,15 @@
 public class SimData
 {
+    final static int DEFAULT_BINS = 10;
+    final static int DEFAULT_BIN_DELTA = 1;
+
     private int[] residueData;
     private float[] positionData;
 
     int minResidue, maxResidue, numResidues;
     float minPos, maxPos;
-    int numBins;
+
+    int numBins = DEFAULT_BINS;
     Table binTable;
 
     public SimData() {
@@ -17,9 +21,14 @@ public class SimData
         this.positionData = positionData;
     }
 
-    public void setBins(int numBins)
-    {
-        this.numBins = numBins;
+    public void changeBins(int deltaBins) {
+        this.numBins = max(1, numBins + deltaBins);
+    }
+    public void increaseBins() {
+        changeBins(DEFAULT_BIN_DELTA);
+    }
+    public void decreaseBins() {
+        changeBins(-DEFAULT_BIN_DELTA);
     }
 
     public void process()
@@ -27,22 +36,23 @@ public class SimData
         assert residueData != null;
         assert positionData != null;
         assert residueData.length == positionData.length;
-        assert numBins > 0;
-        
+        assert numBins > 0;        
         int inputLines = residueData.length;
+        
+        println("processing", inputLines, "input lines into", this.numBins, "bins");
+
         minResidue = min(residueData);
         maxResidue = max(residueData);
         numResidues = maxResidue - minResidue + 1;
         minPos = min(positionData);
         float realMax = max(positionData);
-        maxPos = Math.nextUp(realMax);
+        maxPos = Math.nextUp(Math.nextUp(Math.nextUp((realMax))));
         assert maxPos != realMax;
 
         Mapper posMapper = new Mapper(minPos, maxPos, 0, numBins);
         int[] binIndexes = posMapper.mapi(positionData);
 
         int[][] bins = new int[numResidues][numBins];
-
         for (int i=0; i<inputLines; i++) {
             int resIndex = residueData[i] - minResidue;
             int posBinIndex = binIndexes[i];

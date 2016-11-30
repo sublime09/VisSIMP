@@ -34,21 +34,19 @@ public class HeatMap {
         
         float maxProb = max(sim.binTable.getFloatColumn("BinProb"));
         
-        println("minMax res=", minResidue, maxResidue);
-        println("minMax Pos=", minPos, maxPos); 
-        
-        color from = color(50, 250, 50);
-        color to = color(250, 50, 50);
+        colorMode(HSB);
+        color from = color(0, 0, 255); // white
+        color to = color(0, 255, 128); // dark red
         
         for (TableRow row : sim.binTable.rows()){
             float xPos = xPosMapper.map(row.getInt("Residue"));
             float yPos = yPosMapper.map(row.getFloat("Position"));
             
-            color c = color(0, 0, 0);
             float prob = row.getFloat("BinProb");
-            if (prob > 0.01) c = lerpColor(from, to, prob / maxProb);
+            color c = lerpColor(from, to, prob / maxProb);
             
-            println("box=", xPos, yPos);
+            //if (prob > 0.01) c = lerpColor(from, to, prob / maxProb);
+            
             PShape box = createShape(RECT, xPos, yPos, boxW, boxH);
             box.setFill(c);
             canvas.addChild(box);

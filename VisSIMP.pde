@@ -10,8 +10,7 @@ final float MARGIN = 5;
 
 float mousePressX, mousePressY;
 
-int bins = 20;
-SimData simInput;
+SimData simInput = null;
 HeatMap heat = null;
 
 public void setup()
@@ -40,9 +39,11 @@ public void draw()
 }
 
 // makes all vis elements
-void makeVis()
+void updateVis()
 {
+    heat = null;
     assert simInput != null;
+    simInput.process();
     heat = new HeatMap(simInput);
 }
 
@@ -56,9 +57,10 @@ void keyPressed() {
     if (key == ESC || key == 'q') exit();
     if (key == 'p') save("VisSIMP.png");
     if (key == 'o') askForFile();
-    if (key == 'd') {
-        simInput.print();
-    }
+    if (key == 'd') simInput.print();
+    if (key == '=') simInput.increaseBins();
+    if (key == '-') simInput.decreaseBins();
+    if (key == '=' || key == '-') updateVis();
 }
 
 void mousePressed()

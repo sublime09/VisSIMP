@@ -13,9 +13,7 @@ void fileSelected(File selection) {
     println("Input File = " + selection.getAbsolutePath());
     SimReader sm = new SimReader(filepath);
     simInput = sm.readFile();
-    simInput.setBins(bins);
-    simInput.process();
-    makeVis();
+    updateVis();
 }
 
 
