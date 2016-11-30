@@ -5,16 +5,18 @@ public void askForFile()
 }
 
 void fileSelected(File selection) {
-    if (selection == null) {
-        //println("Window was closed or the user hit cancel.");
-        return;
-    }
+    // window closed or pressed cancel
+    if (selection == null) return;
+    
+    clearVis();
     String filepath = selection.getAbsolutePath();
     println("Input File = " + selection.getAbsolutePath());
     SimReader sm = new SimReader(filepath);
-    sm.readFile();
+    simInput = sm.readFile();
+    simInput.setBins(bins);
+    simInput.process();
+    makeVis();
 }
-
 
 
 // draws the title at the top of the visualization

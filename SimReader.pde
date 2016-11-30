@@ -7,28 +7,40 @@ import java.io.FileNotFoundException;
 public class SimReader
 { 
     String filepath = null;
+    int inputLines;
+    int[] residueData;
+    float[] positionData;
 
     public SimReader(String fp)
     {
+        inputLines = 0;
         filepath = fp;
+        try {
+            inputLines = countLines();
+        } 
+        catch( IOException e) {
+            e.printStackTrace();
+        }
     }
 
-    public void readFile()
+    public SimData readFile()
     {
         FileInputStream inputStream = null;
         Scanner sc = null;
+        
+        residueData = new int[inputLines];
+        positionData = new float[inputLines];
 
         try {
-            int totalLines = countLines();
-            Progress progBar = new Progress("Reading Input", 0, totalLines);
-            int lineNum = 0;
+            Progress progBar = new Progress("Reading Sim", 0, inputLines);
 
             inputStream = new FileInputStream(filepath);
             sc = new Scanner(inputStream);
 
+            int lineNum = 0;
             while (sc.hasNext()) {
-                int residue = sc.nextInt();
-                float pos = sc.nextFloat();
+                residueData[lineNum] = sc.nextInt();
+                positionData[lineNum] = sc.nextFloat();
                 progBar.tryTick(lineNum);
                 lineNum++;
             }
@@ -40,15 +52,16 @@ public class SimReader
 
             progBar.end();
         } 
-        catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } 
         catch (IOException e) {
             e.printStackTrace();
         }
+        
+        SimData sim = new SimData();
+        sim.setInput(residueData, positionData);
+        return sim;
     }
-
-    public int countLines() throws IOException {
+    
+    private int countLines() throws IOException {
         InputStream is = new BufferedInputStream(new FileInputStream(filepath));
         try {
             byte[] c = new byte[1024];
