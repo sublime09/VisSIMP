@@ -7,7 +7,8 @@ import java.awt.FileDialog;
 final float HEADER_AREA = 30;
 final float FOOTER_AREA = 20;
 final float MARGIN = 5;
-
+final float X_AxisSpace = 20;
+final float Y_AxisSpace = 275;
 float mousePressX, mousePressY;
 
 SimData simInput = null;
@@ -27,15 +28,21 @@ public void draw()
     background(0);
     stroke(255);
 
-    float x = MARGIN;
+    float x = MARGIN + Y_AxisSpace;
     float y = MARGIN + HEADER_AREA;
-    float w = width - x - MARGIN;
-    float h = height - y - FOOTER_AREA - MARGIN;
+    float w = width - x - MARGIN ;
+    float h = height - y - FOOTER_AREA - MARGIN - X_AxisSpace;
 
-    if (heat != null) heat.draw(x, y, w, h);
-
+    if (heat != null) 
+      heat.draw(x, y, w, h);
     drawTitle();
     drawFooter();
+    //test case 1
+    //drawX_Axis(null);
+    //test case 2
+    int[] asd = new int[]{1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42};
+    drawX_Axis(asd);
+    drawY_Axis();
 }
 
 // makes all vis elements
