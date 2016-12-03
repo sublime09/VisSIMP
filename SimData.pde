@@ -1,3 +1,4 @@
+// author Patrick Sullivan
 public class SimData
 {
     final static int DEFAULT_BINS = 10;
@@ -7,22 +8,30 @@ public class SimData
     private float[] positionData;
 
     int minResidue, maxResidue, numResidues;
-    float minPos, maxPos;
+    float minPos, closeMaxPos, maxPos;
+    float posBinWidth;
 
     int numBins = DEFAULT_BINS;
     Table binTable;
 
-    public SimData() {
-    }
-
-    public void setInput(int[] residueData, float[] positionData) 
+    public SimData(int[] residueData, float[] positionData) 
     {
         this.residueData = residueData;
         this.positionData = positionData;
+        
+        minResidue = min(residueData);
+        maxResidue = max(residueData);
+        numResidues = maxResidue - minResidue + 1;
+        minPos = min(positionData);
+        maxPos = max(positionData);
+        closeMaxPos = Math.nextUp(Math.nextUp(Math.nextUp((maxPos))));
+        posBinWidth = (maxPos - minPos) / (float)numBins;
+        assert closeMaxPos != maxPos;
     }
 
     public void changeBins(int deltaBins) {
         this.numBins = max(1, numBins + deltaBins);
+        this.posBinWidth = (maxPos - minPos) / (float)numBins;
     }
     public void increaseBins() {
         changeBins(DEFAULT_BIN_DELTA);
@@ -41,15 +50,7 @@ public class SimData
         
         println("processing", inputLines, "input lines into", this.numBins, "bins");
 
-        minResidue = min(residueData);
-        maxResidue = max(residueData);
-        numResidues = maxResidue - minResidue + 1;
-        minPos = min(positionData);
-        float realMax = max(positionData);
-        maxPos = Math.nextUp(Math.nextUp(Math.nextUp((realMax))));
-        assert maxPos != realMax;
-
-        Mapper posMapper = new Mapper(minPos, maxPos, 0, numBins);
+        Mapper posMapper = new Mapper(minPos, closeMaxPos, 0, numBins);
         int[] binIndexes = posMapper.mapi(positionData);
 
         int[][] bins = new int[numResidues][numBins];
@@ -84,7 +85,7 @@ public class SimData
             int residueNum = i + minResidue;
             for (int b=0; b<numBins; b++) {
                 // this is the min position for the BIN, not actual sim position
-                float binPosition = map(b, 0, numBins, minPos, maxPos);
+                float binPosition = map(b, 0, numBins, minPos, closeMaxPos);
 
                 TableRow newRow = binTable.addRow();
                 newRow.setInt("Residue", residueNum);
@@ -101,7 +102,13 @@ public class SimData
     }
 
     public void print() {
-        if (binTable == null) println("No data is binned");
-        else binTable.print();
+        if (binTable == null) {
+            println("No data is binned");
+            return;
+        }
+        binTable.print();
+        println("Residues min:", minResidue, "max:", maxResidue);
+        println("Position min:", minPos, "max:", maxPos);
+        println("Bins:", numBins, "PosBinWidth:", posBinWidth);
     }
 }

@@ -45,8 +45,6 @@ public class HeatMap {
             float prob = row.getFloat("BinProb");
             color c = lerpColor(from, to, prob / maxProb);
             
-            //if (prob > 0.01) c = lerpColor(from, to, prob / maxProb);
-            
             PShape box = createShape(RECT, xPos, yPos, boxW, boxH);
             box.setFill(c);
             canvas.addChild(box);

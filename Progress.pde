@@ -1,6 +1,8 @@
-
+// author Patrick Sullivan
+// shows a progress bar in the console for long processes
 class Progress
 {
+    boolean waitForNextMark = false; 
     float TICK_MS = 500;
     int BAR_LEN  = 50;
 
@@ -25,20 +27,22 @@ class Progress
         nextMark = start;
     }
 
+    // chooses whether to output a new progress bar update to console
     public void tryTick(float value)
     {
         float now = millis();
-        //if (now - prevTick > TICK_MS)
-        if (now > nextTime && value > nextMark)
+        if (now > nextTime)
         {
-            println(getProg(value, now));
-            //prevTick = now;
-            nextTime = now + TICK_MS;
-            float pct = map(value, start, end, 0, 100);
-            nextMark = map(pct + 1, 0, 100, start, end);
+            if (waitForNextMark && value > nextMark) {
+                println(getProg(value, now));
+                nextTime = now + TICK_MS;
+                float pct = map(value, start, end, 0, 100);
+                nextMark = map(pct + 1, 0, 100, start, end);
+            }
         }
     }
 
+    // builds a message for the current value and time
     public String getProg(float value, float now)
     {
         int pct = (int) map(value, start, end, 0, 100);
@@ -51,6 +55,7 @@ class Progress
             bar.append( i<progs ? '#' : ' ');
         bar.append("|");
 
+        // ETC = estimate time to completion
         float msEnd = map(end, start, value, startTick, now);
         int secToEnd = (int) (msEnd - now) / 1000;
         String etc = "ETC: " + secToEnd + "s";
@@ -59,6 +64,7 @@ class Progress
         return join(prog, " ");
     }
 
+    // ends the progress bar, shows total time to complete
     public void end()
     {
         float dur = millis() - startTick;

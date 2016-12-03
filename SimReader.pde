@@ -1,3 +1,4 @@
+// author Patrick Sullivan
 import java.util.Scanner;
 import java.io.BufferedInputStream;
 import java.io.FileInputStream;
@@ -56,8 +57,7 @@ public class SimReader
             e.printStackTrace();
         }
         
-        SimData sim = new SimData();
-        sim.setInput(residueData, positionData);
+        SimData sim = new SimData(residueData, positionData);
         return sim;
     }
     

@@ -1,11 +1,11 @@
 // VisSIMP program 
 // Visualization of Simulated Interactions between Membranes and Proteins
 // Authors: Mohammed Mustafa, Taylor Rhydahl, and Patrick Sullivan
-//import java.io.File;
-import java.awt.FileDialog;
 
 final float HEADER_AREA = 30;
-final float FOOTER_AREA = 20;
+final float FOOTER_AREA = 45;
+final float LEFT_MARGIN = 50;
+final float RIGHT_MARGIN = 5;
 final float MARGIN = 5;
 final float X_AxisSpace = 20;
 final float Y_AxisSpace = 275;
@@ -13,6 +13,7 @@ float mousePressX, mousePressY;
 
 SimData simInput = null;
 HeatMap heat = null;
+Axes visAxes = null;
 
 public void setup()
 {
@@ -21,28 +22,23 @@ public void setup()
     askForFile();
 }
 
-
 public void draw()
 {
     clear();
-    background(0);
-    stroke(255);
+    background(255);
+    stroke(0);
+    fill(0);
 
-    float x = MARGIN + Y_AxisSpace;
-    float y = MARGIN + HEADER_AREA;
-    float w = width - x - MARGIN ;
-    float h = height - y - FOOTER_AREA - MARGIN - X_AxisSpace;
+    float x = LEFT_MARGIN;
+    float y = HEADER_AREA;
+    float w = (width - x) - RIGHT_MARGIN ;
+    float h = (height - y) - FOOTER_AREA ;
 
-    if (heat != null) 
-      heat.draw(x, y, w, h);
+    if (heat != null) heat.draw(x, y, w, h);
+    if (visAxes != null) visAxes.draw(x, y, w, h);
+
     drawTitle();
     drawFooter();
-    //test case 1
-    //drawX_Axis(null);
-    //test case 2
-    int[] asd = new int[]{1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42};
-    drawX_Axis(asd);
-    drawY_Axis();
 }
 
 // makes all vis elements
@@ -52,12 +48,15 @@ void updateVis()
     assert simInput != null;
     simInput.process();
     heat = new HeatMap(simInput);
+    AxesFactory af = new AxesFactory();
+    visAxes = af.getResidueOrderAxes(simInput);
 }
 
 // clears all vis elements
 void clearVis()
 {
     heat = null;
+    visAxes = null;
 }
 
 void keyPressed() {
