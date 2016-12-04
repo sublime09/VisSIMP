@@ -33,7 +33,7 @@ class Progress
         float now = millis();
         if (now > nextTime)
         {
-            if (waitForNextMark && value > nextMark) {
+            if (waitForNextMark == false || value > nextMark) {
                 println(getProg(value, now));
                 nextTime = now + TICK_MS;
                 float pct = map(value, start, end, 0, 100);
