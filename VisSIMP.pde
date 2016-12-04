@@ -1,6 +1,6 @@
 // VisSIMP program 
 // Visualization of Simulated Interactions between Membranes and Proteins
-// Authors: Mohammed Mustafa, Taylor Rhydahl, and Patrick Sullivan
+// Authors: Mohammed Mustafa, Taylor Rydahl, and Patrick Sullivan
 
 final float HEADER_AREA = 30;
 final float FOOTER_AREA = 45;
@@ -14,6 +14,7 @@ float mousePressX, mousePressY;
 SimData simInput = null;
 HeatMap heat = null;
 Axes visAxes = null;
+Membrane membrane = null;
 
 public void setup()
 {
@@ -47,7 +48,8 @@ void updateVis()
     heat = null;
     assert simInput != null;
     simInput.process();
-    heat = new HeatMap(simInput);
+    membrane = new Membrane(simInput);
+    heat = new HeatMap(simInput,membrane);
     AxesFactory af = new AxesFactory();
     visAxes = af.getResidueOrderAxes(simInput);
 }
@@ -67,6 +69,7 @@ void keyPressed() {
     if (key == '=') simInput.increaseBins();
     if (key == '-') simInput.decreaseBins();
     if (key == '=' || key == '-') updateVis();
+    if (key == 'm') askForImage();
 }
 
 void mousePressed()

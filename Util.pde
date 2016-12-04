@@ -1,4 +1,4 @@
-// author Patrick Sullivan and Mustafa Mohammed
+// author Patrick Sullivan, Taylor Rydahl and Mustafa Mohammed
 public void askForFile()
 {
     selectInput("Select a Simulation (.xvg) to process:", "fileSelected");
@@ -16,6 +16,18 @@ void fileSelected(File selection) {
     updateVis();
 }
 
+public void askForImage()
+{
+    selectInput("Select a membrane image (.png) to load:", "imageSelected");
+}
+
+void imageSelected(File selection) {
+    if (selection == null) return;
+    
+    if (membrane != null) {
+      membrane.setMembrane(selection.getAbsolutePath());
+    }
+}
 
 // draws the title at the top of the visualization
 public void drawTitle() {

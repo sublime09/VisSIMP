@@ -1,15 +1,17 @@
-// author Patrick Sullivan
+// author Patrick Sullivan and Taylor Rydahl
 public class HeatMap {
 
     static final float CANVAS_W = 4096; // 4k resolution 
     static final float CANVAS_H = 2060;
     
     SimData sim;
+    Membrane membrane;
     PShape canvas = null;
 
-    public HeatMap(SimData sim)
+    public HeatMap(SimData sim, Membrane membrane)
     {
         this.sim = sim;
+        this.membrane = membrane;
     }
     
     public void printData()
@@ -49,6 +51,8 @@ public class HeatMap {
             box.setFill(c);
             canvas.addChild(box);
         }
+        
+        membrane.setCanvas(CANVAS_W, CANVAS_H);
     }
 
     public void draw(float x, float y, float w, float h)
@@ -65,6 +69,8 @@ public class HeatMap {
         scale(xScale, yScale);
         shape(canvas); 
         popMatrix();
+        
+        membrane.drawMembrane(x,y,w,h);
     }
     
 }

@@ -15,6 +15,7 @@
 * P : save current view as 'VisSIMP.png' in
 * Q or ESC : exit VisSIMP
 * D : output input data to console.  
+* M : load a new membrane image file.
 
 
 ### Input 
