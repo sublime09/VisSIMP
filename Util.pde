@@ -13,6 +13,7 @@ void fileSelected(File selection) {
     println("Input File = " + selection.getAbsolutePath());
     SimReader sm = new SimReader(filepath);
     simInput = sm.readFile();
+    sortedSimInput = new SortedSimData(simInput,SortingCritrion.AVERAGE);
     updateVis();
 }
 
@@ -23,7 +24,7 @@ public void askForImage()
 
 void imageSelected(File selection) {
     if (selection == null) return;
-    
+
     if (membrane != null) {
       membrane.setMembrane(selection.getAbsolutePath());
     }
@@ -31,7 +32,7 @@ void imageSelected(File selection) {
 
 // draws the title at the top of the visualization
 public void drawTitle() {
-    String title = "VisSIMP"; 
+    String title = "VisSIMP";
     int textSize = 23;
     fill(0); //black
     float xPos = width / 2;

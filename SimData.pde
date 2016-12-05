@@ -4,9 +4,9 @@ public class SimData
     final static int DEFAULT_BINS = 10;
     final static int DEFAULT_BIN_DELTA = 1;
 
-    private int[] residueData;
-    private float[] positionData;
-
+    protected int[] residueData;
+    protected float[] positionData;
+    public int[] tableResidueRows;
     int minResidue, maxResidue, numResidues;
     float minPos, closeMaxPos, maxPos;
     float posBinWidth;

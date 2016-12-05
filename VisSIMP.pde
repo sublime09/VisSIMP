@@ -1,4 +1,4 @@
-// VisSIMP program 
+// VisSIMP program
 // Visualization of Simulated Interactions between Membranes and Proteins
 // Authors: Mohammed Mustafa, Taylor Rydahl, and Patrick Sullivan
 
@@ -10,7 +10,7 @@ final float MARGIN = 5;
 final float X_AxisSpace = 20;
 final float Y_AxisSpace = 275;
 float mousePressX, mousePressY;
-
+SortedSimData sortedSimInput = null;
 SimData simInput = null;
 HeatMap heat = null;
 Axes visAxes = null;
@@ -45,13 +45,16 @@ public void draw()
 // makes all vis elements
 void updateVis()
 {
-    heat = null;
-    assert simInput != null;
-    simInput.process();
-    membrane = new Membrane(simInput);
-    heat = new HeatMap(simInput,membrane);
-    AxesFactory af = new AxesFactory();
-    visAxes = af.getResidueOrderAxes(simInput);
+  heat = null;
+  assert simInput != null;
+  assert sortedSimInput != null;
+  simInput.process();
+  sortedSimInput.process();
+  membrane = new Membrane(simInput);
+  heat = new HeatMap(simInput,membrane);
+  AxesFactory af = new AxesFactory();
+  visAxes = af.getResidueOrderAxes(simInput);
+  
 }
 
 // clears all vis elements
@@ -60,7 +63,20 @@ void clearVis()
     heat = null;
     visAxes = null;
 }
-
+void showNormalLayout()
+{
+  clearVis();
+    heat = new HeatMap(simInput,membrane);
+    AxesFactory af = new AxesFactory();
+    visAxes = af.getResidueOrderAxes(simInput);
+}
+private void showSortedLayout()
+{
+  clearVis();
+    heat = new HeatMap(sortedSimInput,membrane);
+    AxesFactory af = new AxesFactory();
+    visAxes = af.getDistanceOrderAxes(sortedSimInput);
+}
 void keyPressed() {
     if (key == ESC || key == 'q') exit();
     if (key == 'p') save("VisSIMP.png");
@@ -70,6 +86,8 @@ void keyPressed() {
     if (key == '-') simInput.decreaseBins();
     if (key == '=' || key == '-') updateVis();
     if (key == 'm') askForImage();
+    if(key == 's') showSortedLayout();
+    if(key == 'n') showNormalLayout();
 }
 
 void mousePressed()

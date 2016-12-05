@@ -11,21 +11,21 @@ class AxesFactory {
         Axes axes = new Axes(xAxis, getNormalYAxis(sd));
         return axes;
     }
-    
+
     public Axes getDistanceOrderAxes(SimData sd) {
         Axis xAxis = new Axis("Residue", Orientation.HORIZONTAL);
-        String[] labels = {"???", "???", "???"};
-        // TODO: get residue order //////////////////////////////////////
-        // TODO: get residue order //////////////////////////////////////
-        // TODO: get residue order //////////////////////////////////////
-        // TODO: get residue order //////////////////////////////////////
-        // TODO: get residue order //////////////////////////////////////
+        SortedSimData ssd = (SortedSimData) sd;
+        String[] labels = new String[ssd.sortedIndeces.length];
+        for(int i = 0; i< labels.length; i++)
+        {
+          labels[i] = ""+ssd.sortedIndeces[i];
+        }
         xAxis.setLabels(labels);
-        
+
         Axes axes = new Axes(xAxis, getNormalYAxis(sd));
         return axes;
     }
-    
+
     private Axis getNormalYAxis(SimData sd) {
         AxisFloat yAxis = new AxisFloat("Distance", Orientation.VERTICAL);
         yAxis.setRange(sd.minPos, sd.maxPos - sd.posBinWidth);
@@ -36,7 +36,7 @@ class AxesFactory {
 }
 
 
-// class that helps manages two axes at the same time.    
+// class that helps manages two axes at the same time.
 class Axes {
     Axis xAxis;
     Axis yAxis;
@@ -55,11 +55,11 @@ class Axes {
 }
 
 // enum that helps with axis label text alignment, tick markers, etc...
-public enum Orientation { 
+public enum Orientation {
     HORIZONTAL, VERTICAL
 };
 
-// Class that defines the common structure of any kind of axis.  
+// Class that defines the common structure of any kind of axis.
 // Abstract class since it does not understand the type of data to label
 class Axis {
     float tickLength = 5;
@@ -68,13 +68,13 @@ class Axis {
     String[] labels;
     protected int numLabels;
     protected int numTicks;
-    
+
     public void setLabels(String[] labels) {
         this.labels = labels;
         this.numLabels = labels.length;
         this.numTicks = labels.length;
     }
-    
+
     protected Axis(String title, Orientation ori) {
         this.title = title;
         this.ori = ori;
@@ -83,7 +83,7 @@ class Axis {
     public void drawAxis(float x1, float y1, float x2, float y2) {
         assert labels != null;
         assert labels.length != 0;
-        
+
         // draw axis baseline
         line(x1, y1, x2, y2);
 
@@ -162,7 +162,7 @@ class AxisFloat extends Axis {
     public AxisFloat(String title, Orientation ori) {
         super(title, ori);
     }
-    
+
     public void setRange(float min, float max) {
         this.min = min;
         this.max = max;
@@ -214,7 +214,7 @@ public class AxesBAD {
                 int x = (int)posMapper.map(i);
                 text(i+"", x, yLocation+20);
             }
-        } 
+        }
          else//for drawing the second view (sorted based on membrane distance)
         {
             Mapper posMapper = new Mapper(0, labels.length-1, offset + Y_AxisSpace, width - offset);
