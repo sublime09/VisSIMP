@@ -32,7 +32,7 @@ public class DistPlot {
             
             // draw box representing min and max position of residue
             PShape box = createShape(RECT, xPos, maxPosY, boxW, boxH);
-            box.setFill(100);
+            box.setFill(200);
             shape(box);
             
             // fetch position for where label goes

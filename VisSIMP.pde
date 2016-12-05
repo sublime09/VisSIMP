@@ -4,7 +4,7 @@
 
 final float HEADER_AREA = 30;
 final float FOOTER_AREA = 45;
-final float LEFT_MARGIN = 50;
+final float LEFT_MARGIN = 70;
 final float RIGHT_MARGIN = 5;
 final float MARGIN = 5;
 final float X_AxisSpace = 20;

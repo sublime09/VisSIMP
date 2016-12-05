@@ -127,11 +127,11 @@ class Axis {
             float x = x1 - 70;
             float y = (y1 + y2) / 2;
             textAlign(CENTER, BOTTOM);
-            translate(x, y);
             rotate( - HALF_PI);
+            translate(x, y);            
             text(title, 0, 0);
-            rotate(HALF_PI);
             translate(-x, -y);
+            rotate(HALF_PI);
         }
     }
 }
