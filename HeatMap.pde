@@ -1,4 +1,4 @@
-// author Patrick Sullivan and Taylor Rydahl
+// author Patrick Sullivan and Taylor Rydahl //<>//
 public class HeatMap {
 
     static final float CANVAS_W = 4096; // 4k resolution
@@ -14,52 +14,37 @@ public class HeatMap {
         this.membrane = membrane;
     }
 
-    public void printData()
-    {
-        if (sim != null) sim.binTable.print();
-        else println("NULL");
-    } //<>//
-
     public void prepCanvas()
     {
-    canvas = createShape(GROUP);
-    float boxW = CANVAS_W / sim.numResidues;
-    float boxH = CANVAS_H / sim.numBins;
+        canvas = createShape(GROUP);
+        float boxW = CANVAS_W / sim.numResidues;
+        float boxH = CANVAS_H / sim.numBins;
 
-    int minResidue = min(sim.binTable.getIntColumn("Residue"));
-    int maxResidue = max(sim.binTable.getIntColumn("Residue"));
-    Mapper xPosMapper = null;
-    if(sim instanceof SortedSimData)
-      xPosMapper = new Mapper(0, sim.numResidues, 0, CANVAS_W - boxW);
-    else
-      xPosMapper = new Mapper(minResidue, maxResidue, 0, CANVAS_W - boxW);
+        int minResidue = sim.minResidue;
+        int maxResidue = sim.maxResidue;
+        float minPos = sim.minPos;
+        float maxPos = sim.maxPos;
+        float maxProb = max(sim.binTable.getFloatColumn("BinProb"));
 
-    float minPos = min(sim.binTable.getFloatColumn("Position"));
-    float maxPos = max(sim.binTable.getFloatColumn("Position"));
-    Mapper yPosMapper = new Mapper(maxPos, minPos, 0, CANVAS_H - boxH);
+        Mapper xPosMapper = new Mapper(minResidue, maxResidue, 0, CANVAS_W - boxW);
+        Mapper yPosMapper = new Mapper(maxPos, minPos, 0, CANVAS_H - boxH);
+        
+        colorMode(HSB);
+        color from = color(0, 0, 255); // white
+        color to = color(0, 255, 128); // dark red
 
-    float maxProb = max(sim.binTable.getFloatColumn("BinProb"));
+        for (TableRow row : sim.binTable.rows()) {
+            int residue = row.getInt("Residue");
+            float xPos = xPosMapper.map(residue);
+            float yPos = yPosMapper.map(row.getFloat("Position"));
 
-    colorMode(HSB);
-    color from = color(0, 0, 255); // white
-    color to = color(0, 255, 128); // dark red
+            float prob = row.getFloat("BinProb");
+            color c = lerpColor(from, to, prob / maxProb);
 
-    for (TableRow row : sim.binTable.rows()){
-      int temp = row.getInt("Residue");
-      float xPos;
-      if(sim instanceof SortedSimData)
-        xPos = xPosMapper.map(getIndexOf(sim.tableResidueRows,temp));
-      else
-        xPos = xPosMapper.map(temp);
-        float yPos = yPosMapper.map(row.getFloat("Position"));
-
-        float prob = row.getFloat("BinProb");
-        color c = lerpColor(from, to, prob / maxProb);
-
-        PShape box = createShape(RECT, xPos, yPos, boxW, boxH);
-        box.setFill(c);
-        canvas.addChild(box);
-    }
+            PShape box = createShape(RECT, xPos, yPos, boxW, boxH);
+            box.setFill(c);
+            canvas.addChild(box);
+        }
 
         membrane.setCanvas(CANVAS_W, CANVAS_H);
     }
@@ -79,13 +64,7 @@ public class HeatMap {
         shape(canvas);
         popMatrix();
 
-        membrane.drawMembrane(x,y,w,h);
+        membrane.drawMembrane(x, y, w, h);
     }
-    private int getIndexOf(int[] array, int target)
-    {
-      for(int i=0; i< array.length; i++)
-        if(target == array[i])
-          return i;
-      return -1;
-    }
+    
 }

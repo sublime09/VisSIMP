@@ -1,4 +1,8 @@
 // author Patrick Sullivan
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Collections;
+
 public class SimData
 {
     final static int DEFAULT_BINS = 10;
@@ -11,14 +15,17 @@ public class SimData
     float minPos, closeMaxPos, maxPos;
     float posBinWidth;
 
-    int numBins = DEFAULT_BINS;
-    Table binTable;
+    private boolean processOrdered = true;
+    private boolean processBins = true;
+    protected int numBins = DEFAULT_BINS;
+    protected Table binTable;
+    protected Table orderedTable;
 
     public SimData(int[] residueData, float[] positionData) 
     {
         this.residueData = residueData;
         this.positionData = positionData;
-        
+
         minResidue = min(residueData);
         maxResidue = max(residueData);
         numResidues = maxResidue - minResidue + 1;
@@ -29,9 +36,21 @@ public class SimData
         assert closeMaxPos != maxPos;
     }
 
+    public Table getBinTable() {
+        assert numBins > 0;
+        if (binTable == null || processBins) processBins();
+        return binTable;
+    }
+
+    public Table getOrderedTable() {
+        if (orderedTable == null || processOrdered) processOrdered();
+        return orderedTable;
+    }
+
     public void changeBins(int deltaBins) {
         this.numBins = max(1, numBins + deltaBins);
         this.posBinWidth = (maxPos - minPos) / (float)numBins;
+        processBins = true;
     }
     public void increaseBins() {
         changeBins(DEFAULT_BIN_DELTA);
@@ -39,15 +58,70 @@ public class SimData
     public void decreaseBins() {
         changeBins(-DEFAULT_BIN_DELTA);
     }
+    public int getNumBins() {
+        return numBins;
+    }
 
-    public void process()
+    public void process() {
+        if (processBins) processBins();
+        if (processOrdered) processOrdered();
+    }
+
+    private void processOrdered() {
+        assert residueData != null;
+        assert positionData != null;
+        assert residueData.length == positionData.length;
+
+        orderedTable = new Table();
+        orderedTable.addColumn("Residue", Table.INT);
+        orderedTable.addColumn("MinPosition", Table.FLOAT);
+        orderedTable.addColumn("AvgPosition", Table.FLOAT);
+        orderedTable.addColumn("MeanPosition", Table.FLOAT);
+        orderedTable.addColumn("MaxPosition", Table.FLOAT);
+
+        // seperate into residue arrays
+        List<List<Float>> resList = new ArrayList();
+        for (int i=0; i<numResidues; i++) 
+            resList.add(new ArrayList<Float>());
+        for (int i=0; i<residueData.length; i++) {
+            int residue = residueData[i];
+            float pos = positionData[i];
+            int residueIndex = residue - minResidue;
+            resList.get(residueIndex).add(pos);
+        }
+
+        for (int i=0; i<resList.size(); i++) {
+            int residue = minResidue + i;
+            List<Float> positions = resList.get(i);
+            assert positions.size() > 0;
+            Collections.sort(positions);
+            float minPosition = positions.get(0);
+            float maxPosition = positions.get(positions.size()-1);
+            int meanIndex = positions.size() / 2;
+            float meanPosition = positions.get(meanIndex);
+            double sum = 0;
+            for (float f : positions) sum += f;
+            float averagePosition = (float) (sum / positions.size());
+
+            TableRow newRow = orderedTable.addRow();
+            newRow.setInt("Residue", residue);
+            newRow.setFloat("MinPosition", minPosition);
+            newRow.setFloat("MaxPosition", maxPosition);
+            newRow.setFloat("AvgPosition", averagePosition);
+            newRow.setFloat("MeanPosition", meanPosition);
+        }
+        
+        processOrdered = false;
+    }
+
+    private void processBins()
     {
         assert residueData != null;
         assert positionData != null;
         assert residueData.length == positionData.length;
         assert numBins > 0;        
         int inputLines = residueData.length;
-        
+
         println("processing", inputLines, "input lines into", this.numBins, "bins");
 
         Mapper posMapper = new Mapper(minPos, closeMaxPos, 0, numBins);
@@ -94,11 +168,7 @@ public class SimData
                 newRow.setFloat("BinProb", binProbs[i][b]);
             }
         }
-    }
-
-    public Table getBinTable() {
-        assert numBins > 0;
-        return binTable;
+        processBins = false;
     }
 
     public void print() {

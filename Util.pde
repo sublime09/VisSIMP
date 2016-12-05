@@ -7,14 +7,11 @@ public void askForFile()
 void fileSelected(File selection) {
     // window closed or pressed cancel
     if (selection == null) return;
-
-    clearVis();
     String filepath = selection.getAbsolutePath();
     println("Input File = " + selection.getAbsolutePath());
     SimReader sm = new SimReader(filepath);
     simInput = sm.readFile();
-    sortedSimInput = new SortedSimData(simInput,SortingCritrion.AVERAGE);
-    updateVis();
+    updateVis(Vis.HEATMAP);
 }
 
 public void askForImage()
@@ -24,7 +21,6 @@ public void askForImage()
 
 void imageSelected(File selection) {
     if (selection == null) return;
-
     if (membrane != null) {
       membrane.setMembrane(selection.getAbsolutePath());
     }

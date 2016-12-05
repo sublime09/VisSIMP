@@ -10,9 +10,16 @@ final float MARGIN = 5;
 final float X_AxisSpace = 20;
 final float Y_AxisSpace = 275;
 float mousePressX, mousePressY;
-SortedSimData sortedSimInput = null;
+
 SimData simInput = null;
+
+enum Vis {
+    NONE, HEATMAP, DIST_ORDER
+};
+Vis currentView = Vis.NONE;
+
 HeatMap heat = null;
+DistPlot dPlot = null;
 Axes visAxes = null;
 Membrane membrane = null;
 
@@ -35,7 +42,11 @@ public void draw()
     float w = (width - x) - RIGHT_MARGIN ;
     float h = (height - y) - FOOTER_AREA ;
 
-    if (heat != null) heat.draw(x, y, w, h);
+    if (currentView == Vis.HEATMAP)
+        heat.draw(x, y, w, h);
+    if (currentView == Vis.DIST_ORDER)
+        dPlot.draw(x, y, w, h);
+        
     if (visAxes != null) visAxes.draw(x, y, w, h);
 
     drawTitle();
@@ -43,40 +54,23 @@ public void draw()
 }
 
 // makes all vis elements
-void updateVis()
+void updateVis(Vis v)
 {
-  heat = null;
-  assert simInput != null;
-  assert sortedSimInput != null;
-  simInput.process();
-  sortedSimInput.process();
-  membrane = new Membrane(simInput);
-  heat = new HeatMap(simInput,membrane);
-  AxesFactory af = new AxesFactory();
-  visAxes = af.getResidueOrderAxes(simInput);
-  
-}
-
-// clears all vis elements
-void clearVis()
-{
-    heat = null;
-    visAxes = null;
-}
-void showNormalLayout()
-{
-  clearVis();
-    heat = new HeatMap(simInput,membrane);
+    assert simInput != null;
+    simInput.process();
+    membrane = new Membrane(simInput);
+    heat = new HeatMap(simInput, membrane);
+    dPlot = new DistPlot(simInput, membrane);
     AxesFactory af = new AxesFactory();
     visAxes = af.getResidueOrderAxes(simInput);
+    currentView = v;
 }
-private void showSortedLayout()
-{
-  clearVis();
-    heat = new HeatMap(sortedSimInput,membrane);
-    AxesFactory af = new AxesFactory();
-    visAxes = af.getDistanceOrderAxes(sortedSimInput);
+
+void toggleView() {
+    if (currentView == Vis.HEATMAP) currentView = Vis.DIST_ORDER;
+    else if  (currentView == Vis.DIST_ORDER) currentView = Vis.HEATMAP;
 }
+
 void keyPressed() {
     if (key == ESC || key == 'q') exit();
     if (key == 'p') save("VisSIMP.png");
@@ -84,10 +78,9 @@ void keyPressed() {
     if (key == 'd') simInput.print();
     if (key == '=') simInput.increaseBins();
     if (key == '-') simInput.decreaseBins();
-    if (key == '=' || key == '-') updateVis();
+    if (key == '=' || key == '-') updateVis(currentView);
     if (key == 'm') askForImage();
-    if(key == 's') showSortedLayout();
-    if(key == 'n') showNormalLayout();
+    if (key == TAB) toggleView();
 }
 
 void mousePressed()
