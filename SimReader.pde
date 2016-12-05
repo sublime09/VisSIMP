@@ -1,9 +1,8 @@
 // author Patrick Sullivan
-import java.util.Scanner;
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.io.BufferedInputStream;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-//import java.io.BufferedReader;
 
 public class SimReader
 { 
@@ -23,33 +22,26 @@ public class SimReader
             e.printStackTrace();
         }
     }
-
-    public SimData readFile()
-    {
-        FileInputStream inputStream = null;
-        Scanner sc = null;
-        
+    
+    public SimData readFile() {
+        BufferedReader bf = null;
         residueData = new int[inputLines];
         positionData = new float[inputLines];
 
         try {
             Progress progBar = new Progress("Reading Sim", 0, inputLines);
-
-            inputStream = new FileInputStream(filepath);
-            sc = new Scanner(inputStream);
+            bf = new BufferedReader(new FileReader(filepath));
 
             int lineNum = 0;
-            while (sc.hasNext()) {
-                residueData[lineNum] = sc.nextInt();
-                positionData[lineNum] = sc.nextFloat();
+            String line = bf.readLine();
+            while (line != null) {
+                String [] delim = line.split("\t");
+                residueData[lineNum] = Integer.parseInt(delim[0]);
+                positionData[lineNum] = Float.parseFloat(delim[1]);
                 progBar.tryTick(lineNum);
                 lineNum++;
+                line = bf.readLine();
             }
-
-            // note that Scanner suppresses exceptions
-            if (sc.ioException() != null) {
-                sc.ioException().printStackTrace();
-            }            
 
             progBar.end();
         } 
