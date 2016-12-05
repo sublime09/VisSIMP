@@ -14,13 +14,17 @@ class AxesFactory {
 
     public Axes getDistanceOrderAxes(SimData sd) {
         Axis xAxis = new Axis("Residue", Orientation.HORIZONTAL);
-        SortedSimData ssd = (SortedSimData) sd;
-        String[] labels = new String[ssd.sortedIndeces.length];
-        for(int i = 0; i< labels.length; i++)
-        {
-          labels[i] = ""+ssd.sortedIndeces[i];
-        }
-        xAxis.setLabels(labels);
+        // TODO TODO TODO
+        // TODO TODO TODO
+        // TODO TODO TODO
+
+        //SortedSimData ssd = (SortedSimData) sd;
+        //String[] labels = new String[ssd.sortedIndeces.length];
+        //for(int i = 0; i< labels.length; i++)
+        //{
+        //  labels[i] = ""+ssd.sortedIndeces[i];
+        //}
+        //xAxis.setLabels(labels);
 
         Axes axes = new Axes(xAxis, getNormalYAxis(sd));
         return axes;
