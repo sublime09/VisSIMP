@@ -49,11 +49,11 @@ class Axes {
         this.xAxis = xAxis;
         this.yAxis = yAxis;
     }
-
-    public void draw(float x1, float y1, float w, float h) {
+    public void draw(float x1, float y1, float w, float h, boolean drawXaxis) {
         float x2 = x1 + w;
         float y2 = y1 + h;
         if (yAxis != null) yAxis.drawAxis(x1, y1, x1, y2);
+        if(drawXaxis)
         if (xAxis != null) xAxis.drawAxis(x1, y2, x2, y2);
     }
 }

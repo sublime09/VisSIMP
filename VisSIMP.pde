@@ -41,13 +41,19 @@ public void draw()
     float y = HEADER_AREA;
     float w = (width - x) - RIGHT_MARGIN ;
     float h = (height - y) - FOOTER_AREA ;
-
+    boolean drawXaxis = true;
     if (currentView == Vis.HEATMAP)
-        heat.draw(x, y, w, h);
+    {
+      heat.draw(x, y, w, h);
+      drawXaxis = true;
+    }
     if (currentView == Vis.DIST_ORDER)
+    {
+      drawXaxis = false;
         dPlot.draw(x, y, w, h);
+    }
         
-    if (visAxes != null) visAxes.draw(x, y, w, h);
+    if (visAxes != null) visAxes.draw(x, y, w, h, drawXaxis);
 
     drawTitle();
     drawFooter();
@@ -67,6 +73,7 @@ void updateVis(Vis v)
 }
 
 void toggleView() {
+    //visAxes = null;
     if (currentView == Vis.HEATMAP) currentView = Vis.DIST_ORDER;
     else if  (currentView == Vis.DIST_ORDER) currentView = Vis.HEATMAP;
 }
