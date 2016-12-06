@@ -47,5 +47,6 @@ public class DistPlot {
             text(residueLabel, labelX, labelY);   
         }
         
+        membrane.drawMembrane(x, y, w, h);
     }
 }
