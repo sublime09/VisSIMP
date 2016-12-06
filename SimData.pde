@@ -30,7 +30,8 @@ public class SimData
         maxResidue = max(residueData);
         numResidues = maxResidue - minResidue + 1;
         //minPos = min(positionData);
-        minPos = 0;
+        // So that the calculations cause the y-axis to start at 0 and everything scales.
+        minPos = 0.0; 
         maxPos = max(positionData);
         closeMaxPos = Math.nextUp(Math.nextUp(Math.nextUp((maxPos))));
         posBinWidth = (maxPos - minPos) / (float)numBins;
