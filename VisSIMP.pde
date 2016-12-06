@@ -10,7 +10,7 @@ final float MARGIN = 5;
 final float X_AxisSpace = 20;
 final float Y_AxisSpace = 275;
 float mousePressX, mousePressY;
-SimReader sm=null;
+SimReader sr=null;
 SimData simInput = null;
 
 enum Vis {

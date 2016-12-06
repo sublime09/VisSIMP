@@ -9,8 +9,8 @@ void fileSelected(File selection) {
   if (selection == null) return;
   String filepath = selection.getAbsolutePath();
   println("Input File = " + selection.getAbsolutePath());
-  sm = new SimReader(filepath);
-  simInput = sm.readFile();
+  sr = new SimReader(filepath);
+  simInput = sr.readFile();
   updateVis(Vis.HEATMAP);
 }
 
@@ -38,29 +38,27 @@ public void drawTitle() {
   textSize(textSize / 2);
   textAlign(RIGHT, TOP);
   text("made with Processing", width, 0);
-  if (sm!=null)
+  if (sr!=null)
   {
     textAlign(LEFT, TOP);
-    text(sm.fileName, 5, 0);
+    
+    text(sr.fileName, 5, 0);
   }
 }
 
 // draws the footer with fps, numPoints
 public void drawFooter() {
-  int textSize = 15;
-  String points = "Points: ????";
   String frate = "FPS: " + nf((int)frameRate, 2) ;
-  String rendered = "Rendered: ???";
   String bins = "Number of Bins: ";
   String lines = "Input File Lines: ";
-  if (sm!=null)
-    lines+= sm.inputLines;
-  if (simInput != null)
+  if (sr!=null) 
+    lines+= sr.inputLines;
+  if (simInput != null) 
     bins += simInput.getNumberOfBins();
-  String[] footer = {points, lines, bins, frate, rendered};
+  String[] footer = {lines, bins, frate};
 
   fill(0);// black
-  textSize(textSize);
+  textSize(15);
   textAlign(RIGHT, BOTTOM);
   text(join(footer, "  "), width, height);
 }
