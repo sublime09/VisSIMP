@@ -191,12 +191,12 @@ class AxisFloat extends Axis {
 
 
 
-public class AxesBAD {
+public class BeforeAxes {
 
     final float X_SPACE = 20;
     final float Y_SPACE = 275;
 
-    public AxesBAD() {
+    public BeforeAxes() {
     }
 
     public void setNumLabels(int xLabels, int yLabels) {
