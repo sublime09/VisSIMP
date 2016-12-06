@@ -2,21 +2,24 @@
 public class Membrane
 {
     PImage memImage;
-    float MEM_DIST = 2.1;
+    float MEM_DIST = 1.76;
     float CANVAS_H = 1.0;
     float CANVAS_W = 1.0;
+    float IMG_W = 1.0;
     
     SimData sim;
     
     public Membrane(SimData sim) 
     {
         memImage = loadImage("membrane.png");
+        IMG_W = memImage.width;
         this.sim = sim;
     }
     
     public void setMembrane(String fileLocation) 
     {
         memImage = loadImage(fileLocation);
+        IMG_W = memImage.width;
     }
     
     public void setCanvas(float h, float w) 
@@ -44,7 +47,9 @@ public class Membrane
         translate(x,y);
         scale(xScale,yScale);
         tint(255,192);
-        image(memImage, 0, CANVAS_H - memHeight, CANVAS_W, memHeight);
+        for(int i = 0; i < CANVAS_W / IMG_W; i++) {
+          image(memImage, i * IMG_W, CANVAS_H - memHeight, IMG_W, memHeight);
+        }
         popMatrix();
     }
 }
