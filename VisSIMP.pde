@@ -3,14 +3,14 @@
 // Authors: Mohammed Mustafa, Taylor Rydahl, and Patrick Sullivan
 
 final float HEADER_AREA = 30;
-final float FOOTER_AREA = 45;
+final float FOOTER_AREA = 60;
 final float LEFT_MARGIN = 70;
 final float RIGHT_MARGIN = 5;
 final float MARGIN = 5;
 final float X_AxisSpace = 20;
 final float Y_AxisSpace = 275;
 float mousePressX, mousePressY;
-
+SimReader sm=null;
 SimData simInput = null;
 
 enum Vis {

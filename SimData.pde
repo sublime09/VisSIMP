@@ -66,7 +66,10 @@ public class SimData
         if (processBins) processBins();
         if (processOrdered) processOrdered();
     }
-
+    public int getNumberOfBins()
+    {
+      return numBins;
+    }
     private void processOrdered() {
         assert residueData != null;
         assert positionData != null;

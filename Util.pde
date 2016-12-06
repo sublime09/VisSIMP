@@ -1,97 +1,108 @@
 // author Patrick Sullivan, Taylor Rydahl and Mustafa Mohammed
 public void askForFile()
 {
-    selectInput("Select a Simulation (.xvg) to process:", "fileSelected");
+  selectInput("Select a Simulation (.xvg) to process:", "fileSelected");
 }
 
 void fileSelected(File selection) {
-    // window closed or pressed cancel
-    if (selection == null) return;
-    String filepath = selection.getAbsolutePath();
-    println("Input File = " + selection.getAbsolutePath());
-    SimReader sm = new SimReader(filepath);
-    simInput = sm.readFile();
-    updateVis(Vis.HEATMAP);
+  // window closed or pressed cancel
+  if (selection == null) return;
+  String filepath = selection.getAbsolutePath();
+  println("Input File = " + selection.getAbsolutePath());
+  sm = new SimReader(filepath);
+  simInput = sm.readFile();
+  updateVis(Vis.HEATMAP);
 }
 
 public void askForImage()
 {
-    selectInput("Select a membrane image (.png) to load:", "imageSelected");
+  selectInput("Select a membrane image (.png) to load:", "imageSelected");
 }
 
 void imageSelected(File selection) {
-    if (selection == null) return;
-    if (membrane != null) {
-      membrane.setMembrane(selection.getAbsolutePath());
-    }
+  if (selection == null) return;
+  if (membrane != null) {
+    membrane.setMembrane(selection.getAbsolutePath());
+  }
 }
 
 // draws the title at the top of the visualization
 public void drawTitle() {
-    String title = "VisSIMP";
-    int textSize = 23;
-    fill(0); //black
-    float xPos = width / 2;
-    textSize(textSize);
-    textAlign(CENTER, TOP);
-    text(title, xPos, 0);
-    textSize(textSize / 2);
-    textAlign(RIGHT, TOP);
-    text("made with Processing", width, 0);
+  String title = "VisSIMP";
+  int textSize = 23;
+  fill(0); //black
+  float xPos = width / 2;
+  textSize(textSize);
+  textAlign(CENTER, TOP);
+  text(title, xPos, 0);
+  textSize(textSize / 2);
+  textAlign(RIGHT, TOP);
+  text("made with Processing", width, 0);
+  if (sm!=null)
+  {
+    textAlign(LEFT, TOP);
+    text(sm.fileName, 5, 0);
+  }
 }
 
 // draws the footer with fps, numPoints
 public void drawFooter() {
-    int textSize = 15;
-    String points = "Points: ????";
-    String frate = "FPS: " + nf((int)frameRate, 2) ;
-    String rendered = "Rendered: ???";
-    String[] footer = {points, frate, rendered};
+  int textSize = 15;
+  String points = "Points: ????";
+  String frate = "FPS: " + nf((int)frameRate, 2) ;
+  String rendered = "Rendered: ???";
+  String bins = "Number of Bins: ";
+  String lines = "Input File Lines: ";
+  if (sm!=null)
+    lines+= sm.inputLines;
+  if (simInput != null)
+    bins += simInput.getNumberOfBins();
+  String[] footer = {points, lines, bins, frate, rendered};
 
-    fill(0);// black
-    textSize(textSize);
-    textAlign(RIGHT, BOTTOM);
-    text(join(footer, "  "), width, height);
+  fill(0);// black
+  textSize(textSize);
+  textAlign(RIGHT, BOTTOM);
+  text(join(footer, "  "), width, height);
 }
 
 public float[] iter(float[] vals, int start, int end, int pace)
 {
-    int resultLen = (end - start) / pace;
-    float[] result = new float[resultLen];
-    for (int i=0; i<resultLen; i++)
-    {
-        result[i] = vals[start + i * pace];
-    }
-    return result;
+  int resultLen = (end - start) / pace;
+  float[] result = new float[resultLen];
+  for (int i=0; i<resultLen; i++)
+  {
+    result[i] = vals[start + i * pace];
+  }
+  return result;
 }
 
 public float[] map(float[] vals, float minV, float maxV, float minF, float maxF)
 {
-    float[] result = new float[vals.length];
-    float slope = (maxF - minF) / (maxV - minV);
-    for (int i=0; i<vals.length; i++)
-    {
-        result[i] = (vals[i] - minV) * slope + minF;
-    }
-    return result;
+  float[] result = new float[vals.length];
+  float slope = (maxF - minF) / (maxV - minV);
+  for (int i=0; i<vals.length; i++)
+  {
+    result[i] = (vals[i] - minV) * slope + minF;
+  }
+  return result;
 }
 
 public float[] mapAuto(float[] vals, float minF, float maxF)
 {
-    float minV = min(vals);
-    float maxV = max(vals);
-    return map(vals, minV, maxV, minF, maxF);
+  float minV = min(vals);
+  float maxV = max(vals);
+  return map(vals, minV, maxV, minF, maxF);
 }
 
 public float sum(float[] vals)
 {
-    float sum = 0.0;
-    for (float value : vals)
-        sum+=value;
-    return sum;
+  float sum = 0.0;
+  for (float value : vals)
+    sum+=value;
+  return sum;
 }
 
 public float avg(float[] vals)
 {
-    return sum(vals)/vals.length;
+  return sum(vals)/vals.length;
 }

@@ -7,6 +7,7 @@ import java.io.FileInputStream;
 public class SimReader
 { 
     String filepath = null;
+    String fileName="";
     int inputLines;
     int[] residueData;
     float[] positionData;
@@ -21,6 +22,7 @@ public class SimReader
         catch( IOException e) {
             e.printStackTrace();
         }
+        fileName = getFileName();
     }
     
     public SimData readFile() {
@@ -73,5 +75,11 @@ public class SimReader
         finally {
             is.close();
         }
+    }
+    private String getFileName()
+    {
+      int index1 = filepath.lastIndexOf('/');
+      String name = filepath.substring(index1+ 1);
+      return name.substring(0, name.length()-4);
     }
 }
