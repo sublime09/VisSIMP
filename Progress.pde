@@ -45,21 +45,25 @@ class Progress
     // builds a message for the current value and time
     public String getProg(float value, float now)
     {
+
         int pct = (int) map(value, start, end, 0, 100);
         String percent = nf(pct, 2) + "%";
-
+       
         int progs = (int) map(value, start, end, 0, BAR_LEN);
-
+  
         StringBuilder bar = new StringBuilder("|");
         for (int i=0; i<BAR_LEN; i++)
             bar.append( i<progs ? '#' : ' ');
         bar.append("|");
 
         // ETC = estimate time to completion
-        float msEnd = map(end, start, value, startTick, now);
-        int secToEnd = (int) (msEnd - now) / 1000;
-        String etc = "ETC: " + secToEnd + "s";
-
+        String etc = "ETC: ";
+        if(start != value) {
+          float msEnd = map(end, start, value, startTick, now);
+          int secToEnd = (int) (msEnd - now) / 1000;
+          etc = "ETC: " + secToEnd + "s";
+        }
+        
         String[] prog = {name, ":", percent, bar.toString(), etc};
         return join(prog, " ");
     }

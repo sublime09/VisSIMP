@@ -162,8 +162,9 @@ public class SimData
             int residueNum = i + minResidue;
             for (int b=0; b<numBins; b++) {
                 // this is the min position for the BIN, not actual sim position
+ 
                 float binPosition = map(b, 0, numBins, minPos, closeMaxPos);
-
+                
                 TableRow newRow = binTable.addRow();
                 newRow.setInt("Residue", residueNum);
                 newRow.setFloat("Position", binPosition);

@@ -1,4 +1,4 @@
-// author Patrick Sullivan and Taylor Rydahl //<>//
+// author Patrick Sullivan and Taylor Rydahl
 public class HeatMap {
 
     static final float CANVAS_W = 4096; // 4k resolution
