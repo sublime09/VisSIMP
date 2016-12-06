@@ -29,7 +29,8 @@ public class SimData
         minResidue = min(residueData);
         maxResidue = max(residueData);
         numResidues = maxResidue - minResidue + 1;
-        minPos = min(positionData);
+        //minPos = min(positionData);
+        minPos = 0;
         maxPos = max(positionData);
         closeMaxPos = Math.nextUp(Math.nextUp(Math.nextUp((maxPos))));
         posBinWidth = (maxPos - minPos) / (float)numBins;

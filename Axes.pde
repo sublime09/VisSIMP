@@ -33,6 +33,7 @@ class AxesFactory {
     private Axis getNormalYAxis(SimData sd) {
         AxisFloat yAxis = new AxisFloat("Distance", Orientation.VERTICAL);
         yAxis.setRange(sd.minPos, sd.maxPos - sd.posBinWidth);
+        //yAxis.setRange(0, sd.maxPos - sd.posBinWidth);
         yAxis.setDecimalFormat("0.000");
         yAxis.setupLabels(sd.numBins);
         return yAxis;
