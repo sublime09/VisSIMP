@@ -43,7 +43,7 @@ public class Membrane
         pushMatrix();
         translate(x,y);
         scale(xScale,yScale);
-        tint(255,127);
+        tint(255,192);
         image(memImage, 0, CANVAS_H - memHeight, CANVAS_W, memHeight);
         popMatrix();
     }
