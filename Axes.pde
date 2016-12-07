@@ -14,18 +14,6 @@ class AxesFactory {
 
     public Axes getDistanceOrderAxes(SimData sd) {
         Axis xAxis = new Axis("Residue", Orientation.HORIZONTAL);
-        // TODO TODO TODO
-        // TODO TODO TODO
-        // TODO TODO TODO
-
-        //SortedSimData ssd = (SortedSimData) sd;
-        //String[] labels = new String[ssd.sortedIndeces.length];
-        //for(int i = 0; i< labels.length; i++)
-        //{
-        //  labels[i] = ""+ssd.sortedIndeces[i];
-        //}
-        //xAxis.setLabels(labels);
-
         Axes axes = new Axes(xAxis, getNormalYAxis(sd));
         return axes;
     }
@@ -127,12 +115,13 @@ class Axis {
         } else { // VERTICAL ori
             float x = x1 - 70;
             float y = (y1 + y2) / 2;
-            textAlign(CENTER, BOTTOM);
+            translate(x, y); 
             rotate( - HALF_PI);
-            translate(x, y);            
+            textAlign(CENTER, TOP);  
             text(title, 0, 0);
-            translate(-x, -y);
             rotate(HALF_PI);
+            translate(-x, -y);
+            
         }
     }
 }
