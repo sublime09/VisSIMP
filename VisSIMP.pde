@@ -92,6 +92,33 @@ void keyPressed() {
 
 void mousePressed()
 {
-    mousePressX = mouseX;
-    mousePressY = mouseY;
+    float x = LEFT_MARGIN;
+  float y = HEADER_AREA;
+  float w = (width - x) - RIGHT_MARGIN ;
+  float h = (height - y) - FOOTER_AREA ;
+  float boxW = HeatMap.CANVAS_W / simInput.numResidues;
+  if (mouseX>x && mouseX<=x+w &&mouseY>y && mouseY<y+h)
+  {
+    if (currentView == Vis.HEATMAP)
+    {
+      Mapper MxPosMapper = new Mapper(x, w+x, 0, HeatMap.CANVAS_W);
+      int selectedResidue =floor( map(MxPosMapper.map(mouseX), 0, HeatMap.CANVAS_W - boxW, simInput.minResidue, simInput.maxResidue));
+      if (heat.selectedRes == selectedResidue)//deselect it
+      {
+        heat.selectedRes = -1;
+        dPlot.selectedRes = -1;
+      } else
+      {
+        heat.selectedRes = selectedResidue;
+        dPlot.selectedRes = selectedResidue;
+      }
+      heat.prepCanvas();
+    } else if (currentView == Vis.DIST_ORDER)
+    {
+      int selectedResidue = dPlot.getSelectedRes(mouseX,x,w);
+      heat.selectedRes = selectedResidue;
+      heat.prepCanvas();
+      dPlot.draw(x, y, w, h);
+    }
+  }
 }

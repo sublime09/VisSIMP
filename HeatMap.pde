@@ -1,4 +1,4 @@
-// author Patrick Sullivan and Taylor Rydahl
+// author Patrick Sullivan, Taylor Rydahl and Mostafa Mohammed
 public class HeatMap {
 
     static final float CANVAS_W = 4096; // 4k resolution
@@ -7,7 +7,7 @@ public class HeatMap {
     SimData sim;
     Membrane membrane;
     PShape canvas = null;
-
+    int selectedRes = -1;
     public HeatMap(SimData sim, Membrane membrane)
     {
         this.sim = sim;
@@ -42,6 +42,13 @@ public class HeatMap {
             color c = lerpColor(from, to, prob / maxProb);
 
             PShape box = createShape(RECT, xPos, yPos, boxW, boxH);
+            if(residue == selectedRes)
+            {
+              colorMode(RGB);
+              box.setStrokeWeight(10);
+              box.setStroke(color(153,153,0));
+              colorMode(HSB);
+            }
             box.setFill(c);
             canvas.addChild(box);
         }

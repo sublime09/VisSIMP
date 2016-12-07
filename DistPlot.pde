@@ -1,9 +1,9 @@
-// author Patrick Sullivan
+// author Patrick Sullivan and Mostafa Mohammed
 public class DistPlot {
     SimData sim;
     Membrane membrane;
     ResidueColors residue;
-    
+    int selectedRes = -1;
     public DistPlot(SimData sim, Membrane membrane)
     {
         this.sim = sim;
@@ -57,6 +57,14 @@ public class DistPlot {
           // draw box representing min and max position of residue
           PShape box = createShape(RECT, xPos, maxPosY, boxW, boxH);
           box.setFill(residue.residueColors[i]);
+          box.setFill(residue.residueColors[i]);
+          if(row.getInt("Residue") == selectedRes)
+            {
+              colorMode(RGB);
+              box.setStrokeWeight(10);
+              box.setStroke(color(153,153,0));
+              colorMode(HSB);
+            }
           shape(box);
           
           // fetch position for where label goes
@@ -73,5 +81,13 @@ public class DistPlot {
       }
         
         membrane.drawMembrane(x, y, w, h);
+    }
+    public int getSelectedRes(int xPos,float x, float w)
+    {
+      Mapper xPosMapper = new Mapper(x, x+w, 0, sim.numResidues);
+      int index = floor(xPosMapper.map(xPos));
+      selectedRes = sim.getOrderedTable().getRow(index).getInt("Residue");
+      println(selectedRes);
+      return selectedRes;
     }
 }

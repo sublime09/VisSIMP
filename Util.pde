@@ -1,4 +1,4 @@
-// author Patrick Sullivan, Taylor Rydahl and Mustafa Mohammed
+// author Patrick Sullivan, Taylor Rydahl and Mostafa Mohammed
 public void askForFile()
 {
   selectInput("Select a Simulation (.xvg) to process:", "fileSelected");

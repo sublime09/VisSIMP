@@ -1,4 +1,4 @@
-// author Patrick Sullivan
+// author Patrick Sullivan and Mostafa Mohammed
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.BufferedInputStream;
