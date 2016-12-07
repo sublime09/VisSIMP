@@ -104,3 +104,13 @@ public float avg(float[] vals)
 {
   return sum(vals)/vals.length;
 }
+
+public float stdDev(float[] data, float mean)
+{
+  float diffSq = 0;
+  for(int i = 0; i < data.length; i++) {
+    diffSq += sq(data[i] - mean);
+  }
+  diffSq /= data.length;
+  return sqrt(diffSq);
+}
