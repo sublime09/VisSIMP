@@ -12,6 +12,8 @@ public class DistPlot {
     }
     
     public void draw(float x, float y, float w, float h) {
+        membrane.drawMembrane(x, y, w, h);
+      
         float boxW = w / sim.numResidues;
         
         Mapper xPosMapper = new Mapper(0, sim.numResidues, x, x+w);
@@ -91,8 +93,6 @@ public class DistPlot {
           textAlign(CENTER, CENTER);
           text(residueLabel, labelX, labelY);   
       }
-        
-        membrane.drawMembrane(x, y, w, h);
     }
     
     public int getSelectedRes(int xPos,float x, float w)
