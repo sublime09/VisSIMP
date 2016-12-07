@@ -21,7 +21,7 @@ public class DistPlot {
         Table binT = sim.getBinTable();
         int[] order = new int[sim.numResidues];
         
-        for(int i = 1; i <= order.length; i++) {
+        for(int i = 0; i < order.length; i++) {
           order[i] = i;
         }
         
@@ -64,7 +64,7 @@ public class DistPlot {
           float labelPos = binPosition;
           
           // place text label into screen area
-          String residueLabel = Integer.toString(i);
+          String residueLabel = Integer.toString(i+1);
           float nextXPos = xPosMapper.map(i + 1);
           float labelX = (nextXPos + xPos) / 2;
           float labelY = yPosMapper.map(labelPos);
