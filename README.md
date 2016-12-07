@@ -1,6 +1,6 @@
 # VisSIMP
 ### Visualization of Simulated Interactions between Membranes and Proteins
-###*Made by Mustafa Mohammed, Taylor Rydahl, and Patrick Sullivan*
+###*Made by Mostafa Mohammed, Taylor Rydahl, and Patrick Sullivan*
 ###*In collaboration with Dr. Anne Brown*
 #### Created using [Processing](https://processing.org/)
 
