@@ -1,7 +1,7 @@
 public class ResidueColors {
   final int RED = 0x7FFF0000;
-  final int BLUE = 0x7F00FF00;
-  final int GREEN = 0x7F0000FF;
+  final int GREEN = 0x7F00FF00;
+  final int BLUE = 0x7F0000FF;
   final int BLACK = 0x7F000000;
   
   public int[] residueColors;
