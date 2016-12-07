@@ -87,7 +87,11 @@ public class DistPlot {
     {
       Mapper xPosMapper = new Mapper(x, x+w, 0, sim.numResidues);
       int index = floor(xPosMapper.map(xPos));
-      selectedRes = sim.getOrderedTable().getRow(index).getInt("Residue");
+      int ResNumber = sim.getOrderedTable().getRow(index).getInt("Residue");
+      if(selectedRes == ResNumber)
+        selectedRes = -1;
+        else
+        selectedRes = ResNumber;
       //println(selectedRes);
       return selectedRes;
     }
