@@ -10,7 +10,7 @@ public class DistPlot {
         this.membrane = membrane;
         this.residue = new ResidueColors(sim);
     }
-    
+    Table orderTable;
     public void draw(float x, float y, float w, float h) {
         membrane.drawMembrane(x, y, w, h);
       
@@ -22,7 +22,7 @@ public class DistPlot {
         Table orderT = sim.getOrderedTable();
         Table binT = sim.getBinTable();
    
-        Table orderTable = new Table();
+        orderTable = new Table();
         orderTable.addColumn("Residue", Table.INT);
         orderTable.addColumn("BinSize", Table.INT);
         orderTable.addColumn("BinPosition", Table.FLOAT);
@@ -99,7 +99,7 @@ public class DistPlot {
     {
       Mapper xPosMapper = new Mapper(x, x+w, 0, sim.numResidues);
       int index = floor(xPosMapper.map(xPos));
-      int ResNumber = sim.getOrderedTable().getRow(index).getInt("Residue");
+      int ResNumber = orderTable.getRow(index).getInt("Residue");
       if(selectedRes == ResNumber)
         selectedRes = -1;
         else
