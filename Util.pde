@@ -114,3 +114,13 @@ public float stdDev(float[] data, float mean)
   diffSq /= data.length;
   return sqrt(diffSq);
 }
+public Menu createMenu(int x, int y)
+{
+  Menu m;
+  String[] labels = new String[]{"Change The View","Update","Increase Bins", "Decrease Bins", "Load new File", "Save The Image"};
+  int numberOfItems = labels.length;
+  int menuWidth = 200;
+  int menuHeight = 50 * numberOfItems;
+  m = new Menu(numberOfItems, x, y, menuHeight, menuWidth, labels);
+  return m;
+}
