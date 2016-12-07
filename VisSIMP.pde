@@ -1,6 +1,6 @@
 // VisSIMP program
 // Visualization of Simulated Interactions between Membranes and Proteins
-// Authors: Mohammed Mustafa, Taylor Rydahl, and Patrick Sullivan
+// Authors: Mostafa Mohammed, Taylor Rydahl, and Patrick Sullivan
 
 final float HEADER_AREA = 30;
 final float FOOTER_AREA = 60;

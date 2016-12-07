@@ -1,4 +1,4 @@
-// author Patrick Sullivan and Mustafa Mohammed
+// author Patrick Sullivan and Mostafa Mohammed
 import java.text.DecimalFormat;
 
 // factory that creates the axes for what view mode we are using
