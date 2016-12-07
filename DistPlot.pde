@@ -19,31 +19,44 @@ public class DistPlot {
         
         Table orderT = sim.getOrderedTable();
         Table binT = sim.getBinTable();
-        int[] order = new int[sim.numResidues];
-        
-        for(int i = 0; i < order.length; i++) {
-          order[i] = i;
+   
+        Table orderTable = new Table();
+        orderTable.addColumn("Residue", Table.INT);
+        orderTable.addColumn("BinSize", Table.INT);
+        orderTable.addColumn("BinPosition", Table.FLOAT);
+        for(int i = 0; i < sim.numResidues; i++) {
+          int size = 0;
+          int startingBin = i * sim.getNumBins();
+          for(int j = 0; j < sim.getNumBins(); j++) {
+            if(binT.getRow(startingBin + j).getFloat("BinSize") > binT.getRow(startingBin + size).getFloat("BinSize")) {
+              size = j;
+            }
+          }
+          float pos = binT.getRow(startingBin + size).getFloat("Position");
+          TableRow newRow = orderTable.addRow();
+          newRow.setInt("Residue", i);
+          newRow.setInt("BinSize", size);
+          newRow.setFloat("BinPosition", pos);
         }
+        orderTable.sort("BinSize");
         
-        for(int i : order) {
+        for(int i = 0; i < orderTable.getRowCount(); i++) {
           // fetch features from the table
+          //int i = order[n];
           TableRow row = orderT.getRow(i);
+          TableRow binRow = orderTable.getRow(i);
           
           // Calculate the largest bin for the residue and the standard deviation.
-          int maxBin = 0;
           int startingBin = i * sim.getNumBins();
           float[] binData = new float[sim.getNumBins()];
           
           for(int j = 0; j < sim.getNumBins(); j++) {
             binData[j] = binT.getRow(startingBin + j).getFloat("Position");
-            if(binT.getRow(startingBin + j).getFloat("BinSize") > binT.getRow(startingBin + maxBin).getFloat("BinSize")) {
-              maxBin = j;
-            }
           }
           
           float sigma = stdDev(binData, row.getFloat("MeanPosition"));
           
-          float binPosition = binT.getRow(startingBin + maxBin).getFloat("Position");
+          float binPosition = binRow.getFloat("BinPosition");
           
           float minPos = binPosition - (0.5 * sigma);
           float maxPos = binPosition + (0.5 * sigma);
@@ -56,9 +69,8 @@ public class DistPlot {
           
           // draw box representing min and max position of residue
           PShape box = createShape(RECT, xPos, maxPosY, boxW, boxH);
-          box.setFill(residue.residueColors[i]);
-          box.setFill(residue.residueColors[i]);
-          if(row.getInt("Residue") == selectedRes)
+          box.setFill(residue.residueColors[binRow.getInt("Residue")]);
+          if(binRow.getInt("Residue") == selectedRes)
             {
               colorMode(RGB);
               box.setStrokeWeight(10);
@@ -72,7 +84,7 @@ public class DistPlot {
           float labelPos = binPosition;
           
           // place text label into screen area
-          String residueLabel = Integer.toString(i+1);
+          String residueLabel = Integer.toString(binRow.getInt("Residue"));
           float nextXPos = xPosMapper.map(i + 1);
           float labelX = (nextXPos + xPos) / 2;
           float labelY = yPosMapper.map(labelPos);
