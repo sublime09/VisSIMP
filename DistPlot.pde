@@ -82,12 +82,13 @@ public class DistPlot {
         
         membrane.drawMembrane(x, y, w, h);
     }
+    
     public int getSelectedRes(int xPos,float x, float w)
     {
       Mapper xPosMapper = new Mapper(x, x+w, 0, sim.numResidues);
       int index = floor(xPosMapper.map(xPos));
       selectedRes = sim.getOrderedTable().getRow(index).getInt("Residue");
-      println(selectedRes);
+      //println(selectedRes);
       return selectedRes;
     }
 }
