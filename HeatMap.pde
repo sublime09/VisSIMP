@@ -23,11 +23,11 @@ public class HeatMap {
         int minResidue = sim.minResidue;
         int maxResidue = sim.maxResidue;
         float minPos = sim.minPos;
-        float maxPos = sim.maxPos;
+        float maxBinPos = max(sim.binTable.getFloatColumn("Position"));;
         float maxProb = max(sim.binTable.getFloatColumn("BinProb"));
 
         Mapper xPosMapper = new Mapper(minResidue, maxResidue, 0, CANVAS_W - boxW);
-        Mapper yPosMapper = new Mapper(maxPos, minPos, 0, CANVAS_H - boxH);
+        Mapper yPosMapper = new Mapper(minPos, maxBinPos, CANVAS_H - boxH, 0);
         
         colorMode(HSB);
         color from = color(0, 0, 255); // white
