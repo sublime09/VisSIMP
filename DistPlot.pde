@@ -34,7 +34,7 @@ public class DistPlot {
           }
           float pos = binT.getRow(startingBin + size).getFloat("Position");
           TableRow newRow = orderTable.addRow();
-          newRow.setInt("Residue", i);
+          newRow.setInt("Residue", i + 1);
           newRow.setInt("BinSize", size);
           newRow.setFloat("BinPosition", pos);
         }
@@ -69,7 +69,7 @@ public class DistPlot {
           
           // draw box representing min and max position of residue
           PShape box = createShape(RECT, xPos, maxPosY, boxW, boxH);
-          box.setFill(residue.residueColors[binRow.getInt("Residue")]);
+          box.setFill(residue.residueColors[binRow.getInt("Residue")-1]);
           if(binRow.getInt("Residue") == selectedRes)
             {
               colorMode(RGB);
