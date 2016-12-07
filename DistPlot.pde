@@ -1,16 +1,24 @@
 // author Patrick Sullivan and Mostafa Mohammed
 public class DistPlot {
+  
+    static final float CANVAS_W = 4096; // 4k resolution
+    static final float CANVAS_H = 2060;
+
+  
     SimData sim;
     Membrane membrane;
     ResidueColors residue;
+    Table orderTable;
     int selectedRes = -1;
+    
     public DistPlot(SimData sim, Membrane membrane)
     {
         this.sim = sim;
         this.membrane = membrane;
         this.residue = new ResidueColors(sim);
+        membrane.setCanvas(CANVAS_W, CANVAS_H);
     }
-    Table orderTable;
+    
     public void draw(float x, float y, float w, float h) {
         membrane.drawMembrane(x, y, w, h);
       
